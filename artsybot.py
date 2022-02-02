@@ -2,12 +2,11 @@
 import os
 import random
 
-import discord
 import asyncio
 
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 
 load_dotenv()
 TOKEN = os.environ.get("TOKEN")
@@ -31,7 +30,7 @@ async def on_ready():
     post_fact.start()
 
 
-@bot.command(name='info', help='Responds with a random quote from Brooklyn 99')
+@bot.command(name='info')
 async def infos(ctx):
     info = ('**Current Supply: 6942** \n'
             '**Current Mint Date: Mid February** \n \n'
