@@ -4,60 +4,65 @@ import random
 
 import discord
 import asyncio
+
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from datetime import datetime, time, timedelta
 
 load_dotenv()
-TOKEN = "OTM3ODUwOTYyMDQ1OTY4NDQ1.YfhvxQ.MYpUnOFY8cAnRBuCvM3IWXBLQvk"
+TOKEN = os.environ.get("TOKEN")
 
-client = discord.Client()
+bot = commands.Bot(command_prefix='!')
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    now = datetime.utcnow()
+    if now.minute < 36:
+        next_post_time = now + timedelta(minutes=(36 - now.minute))
+    elif now.minute > 36:
+        next_post_time = now + timedelta(minutes=(60 - now.minute + 36))
+    else:
+        next_post_time = now
+
+    seconds = (next_post_time - now).total_seconds()
+    await asyncio.sleep(seconds)
+
+    post_fact.start()
 
 
-@client.event
-async def infos(message):
-    if message.author == client.user:
-        return
+@bot.command(name='info', help='Responds with a random quote from Brooklyn 99')
+async def infos(ctx):
+    info = ('**Current Supply: 6942** \n'
+            '**Current Mint Date: Mid February** \n \n'
+            'Our Roadmap can be found at <#906202985716133911> 🛣️ \n'
+            'For updates and info an how to get whitelisted see <#906216888902774794>! 🌖 \n \n'
+            'Be sure to check out <https://www.artsyapes.com/> and <https://twitter.com/ARTSY_APES>! \n'
+            'Enjoy the Banana Bonanza. 🍌 ')
 
-    if message.content == '*info':
-        info = ('**Current Supply: 6942** \n'
-                '**Current Mint Date: Mid February** \n \n'
-                'Our Roadmap can be found at <#906202985716133911> 🛣️ \n'
-                'For updates and info an how to get whitelisted see <#906216888902774794>! 🌖 \n \n'
-                'Be sure to check out <https://www.artsyapes.com/> and <https://twitter.com/ARTSY_APES>! \n'
-                'Enjoy the Banana Bonanza. 🍌 ')
-
-        await message.channel.send(info)
+    await ctx.send(info)
 
 
-@client.event
-async def socials(message):
-    if message.author == client.user:
-        return
+@bot.command(name='socials')
+async def socials(ctx):
+    social = ('**Social Media Links** \n'
+              'ArtsyApes Twitter: <https://twitter.com/ARTSY_APES> \n'
+              'ArtsyApes Telegram: <https://t.me/artsyapes> \n'
+              'ArtsyApes Instagram: <https://www.instagram.com/artsy.apes> \n \n'
 
-    if message.content == '*socials':
-        social = ('**Social Media Links** \n'
-                  'ArtsyApes Twitter: <https://twitter.com/ARTSY_APES> \n'
-                  'ArtsyApes Telegram: <https://t.me/artsyapes> \n'
-                  'ArtsyApes Instagram: <https://www.instagram.com/artsy.apes> \n \n'
+              '🦍 Website 🦍 \n'
+              '--- <https://www.artsyapes.com/> --- \n \n'
 
-                  '🦍 Website 🦍 \n'
-                  '--- <https://www.artsyapes.com/> --- \n \n'
+              'Stebo\'s Site And Socials \n'
+              'Website: <https://www.steboart.com/> \n'
+              'Twitter: <https://twitter.com/stebo_art> \n'
+              'Instagram: <https://www.instagram.com/stebo.art/> \n'
+              'Facebook: <https://www.facebook.com/stebo432>')
 
-                  'Stebo\'s Site And Socials \n'
-                  'Website: <https://www.steboart.com/> \n'
-                  'Twitter: <https://twitter.com/stebo_art> \n'
-                  'Instagram: <https://www.instagram.com/stebo.art/> \n'
-                  'Facebook: <https://www.facebook.com/stebo432>')
-
-        await message.channel.send(social)
+    await ctx.send(social)
 
 
-@client.event
+@tasks.loop(seconds=7200)
 async def post_fact():
     ape_facts = [
         ('Apes are herbivores for the most part, meaning that they eat fruit and leaves. '
@@ -121,29 +126,14 @@ async def post_fact():
         'Orangutans can drive golf-carts. https://youtu.be/V6ze-nVh2Bs'
     ]
 
-    channel = client.get_channel(938167547348545546)
+    channel = bot.get_channel(938475372146733068)
     response = random.choice(ape_facts)
     await channel.send(response)
 
 
-async def background_task():
-    now = datetime.utcnow()
-    if now.minute < 42:
-        next_post_time = now + timedelta(minutes=(42 - now.minute))
-    elif now.minute > 42:
-        next_post_time = now + timedelta(minutes=(60 - now.minute + 42))
-    else:
-        next_post_time = now
-
-    seconds = (next_post_time - now).total_seconds()
-    await asyncio.sleep(seconds)
-
-    while True:
-        await post_fact()
-        target_time = now + timedelta(seconds=7200)
-        seconds = (target_time - now).total_seconds()  # Seconds until tomorrow (midnight)
-        await asyncio.sleep(seconds)
+def main():
+    bot.run(TOKEN)
 
 
-client.loop.create_task(background_task())
-client.run(TOKEN)
+if __name__ == "__main__":
+    main()
