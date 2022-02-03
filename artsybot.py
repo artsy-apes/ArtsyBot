@@ -17,10 +17,10 @@ bot = commands.Bot(command_prefix='!')
 @bot.event
 async def on_ready():
     now = datetime.utcnow()
-    if now.minute < 36:
-        next_post_time = now + timedelta(minutes=(36 - now.minute))
-    elif now.minute > 36:
-        next_post_time = now + timedelta(minutes=(60 - now.minute + 36))
+    if now.minute < 42:
+        next_post_time = now + timedelta(minutes=(42 - now.minute))
+    elif now.minute > 42:
+        next_post_time = now + timedelta(minutes=(60 - now.minute + 42))
     else:
         next_post_time = now
 
@@ -31,6 +31,7 @@ async def on_ready():
 
 
 @bot.command(name='info')
+@commands.cooldown(1, 20, commands.BucketType.channel)
 async def infos(ctx):
     info = ('**Current Supply: 6942** \n'
             '**Current Mint Date: Mid February** \n \n'
@@ -42,7 +43,16 @@ async def infos(ctx):
     await ctx.send(info)
 
 
+@bot.command(name='helpme')
+@commands.cooldown(1, 20, commands.BucketType.channel)
+async def helps(ctx):
+    info = 'I dunno man, go bug <@423648788578566144>.'
+
+    await ctx.send(info)
+
+
 @bot.command(name='socials')
+@commands.cooldown(1, 20, commands.BucketType.channel)
 async def socials(ctx):
     social = ('**Social Media Links** \n'
               'ArtsyApes Twitter: <https://twitter.com/ARTSY_APES> \n'
@@ -125,7 +135,7 @@ async def post_fact():
         'Orangutans can drive golf-carts. https://youtu.be/V6ze-nVh2Bs'
     ]
 
-    channel = bot.get_channel(938475372146733068)
+    channel = bot.get_channel(938167547348545546)
     response = random.choice(ape_facts)
     await channel.send(response)
 
