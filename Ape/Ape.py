@@ -16,34 +16,34 @@ class Ape:
 
         # Resolve traits path
         for _type, name in self.traits.items():
-            path = f'traits/{_type}/{name}.png'
+            path = f'assets/{_type}/{name}.png'
 
             if _type == "mouth attributes" and self._traits[_type] != "Respirator":
-                path = f'traits/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
 
             if _type == 'jewelry' and self._traits[_type] == "Septum Piercing":
-                path = f'traits/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
 
             if _type == 'jewelry' and self.traits[_type] == "Golden Earring" and self.traits["body"] == "Jeff":
-                path = f'traits/{_type}/{self._traits["body"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["body"]}/{self._traits[_type]}.png'
 
             if _type == 'jewelry' and self._traits[_type] == "Golden Eyebrow Piercing":
-                path = f'traits/{_type}/{self._traits["eye"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["eye"]}/{self._traits[_type]}.png'
 
             if _type == 'jewelry' \
                     and self._traits[_type] == "Golden Eyebrow Piercing" \
                     and self.traits["body"] == "Turned":
-                path = f'traits/{_type}/{self.traits["body"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self.traits["body"]}/{self._traits[_type]}.png'
 
             if _type == "headwear" \
                     and self.traits["body"] == "Robin" \
                     and self.traits["headwear"] in ["Gold Crown", "Reverse Hat", "Captains Hat"]:
-                path = f'traits/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
 
             if _type == "headwear" \
                     and self.traits["head"] == "Juanita" \
                     and self.traits["headwear"] in ["Gold Crown", "Reverse Hat"]:
-                path = f'traits/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
+                path = f'assets/{_type}/{self._traits["head"]}/{self._traits[_type]}.png'
 
             self.__traits_path[_type] = path
 
@@ -74,12 +74,12 @@ class Ape:
         if self._has_face_jewelry() and type(self) is not GasmaskApe and type(self) is not AstronautApe:
             jewelry_index = render_order.index("jewelry")
             head_index = render_order.index("head")
-            render_order[jewelry_index], render_order[head_index] = render_order[head_index], render_order[jewelry_index]
+            render_order[jewelry_index], render_order[head_index] = render_order[head_index], render_order[
+                jewelry_index]
         elif self._traits["jewelry"] == "Golden Eyebrow Piercing":
             jewelry_index = render_order.index("jewelry")
             eye_index = render_order.index("eye")
             render_order.insert(eye_index, render_order.pop(jewelry_index))
-
 
         for trait in render_order:
             try:
@@ -92,18 +92,10 @@ class Ape:
                 print(e)
                 print(self._traits)
 
-        tag_img = Image.open("traits/tag/Tag white.png").convert('RGBA')
+        tag_img = Image.open("assets/tag/Tag white.png").convert('RGBA')
         ape = Image.alpha_composite(ape, tag_img)
 
-        if not os.path.exists("generated"):
-            os.mkdir('generated')
-
-        ape = ape.convert('RGB')
-        ape = ape.resize((800, 800), Image.ANTIALIAS)
-        file_name = str("artsyape-" + str(self.id) + ".jpeg")
-        ape.save("./generated/" + file_name, "JPEG", optimize=True, quality=100)
-
-        self._create_json_metadata_file()
+        return ape.convert('RGB')
 
     def _create_json_metadata_file(self):
         if not os.path.exists("generated/metadata"):
@@ -111,7 +103,7 @@ class Ape:
 
         data = {
             "id": self.id,
-            "traits": {
+            "assets": {
                 "ape": self.traits["head"] if self.traits["outfit"] != "Banana Game Suit" else "Unknown",
                 "background": self.traits["background"],
                 "eyes": self.traits["eye"],
@@ -136,7 +128,6 @@ class GoldenApe(Ape):
         super().__init__(traits)
 
 
-
 class ZombieApe(Ape):
     RENDER_ORDER = ["background", "body", "outfit",
                     "jewelry", "head", "eye", "glasses", "mouth attributes",
@@ -147,7 +138,6 @@ class ZombieApe(Ape):
         super().__init__(traits)
         if "Gasmask" in traits["glasses"]:
             traits["glasses"] = "None"
-
 
 
 class AstronautApe(Ape):
@@ -179,6 +169,7 @@ class LuartApe(Ape):
         if "Gasmask" in traits["glasses"]:
             traits["glasses"] = "None"
         super().__init__(traits)
+
 
 class SquidgameApe(Ape):
     RENDER_ORDER = ["background", "outfit"]

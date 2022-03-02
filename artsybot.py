@@ -1,15 +1,19 @@
 # bot.py
 import csv
+import json
 import os
 import random
 
 import asyncio
+from io import BytesIO
 
+from discord import File
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import pandas as pd
 
+from Ape.ApeFactory import ApeFactory
 
 load_dotenv()
 TOKEN = os.environ.get("TOKEN")
@@ -163,10 +167,27 @@ async def args(ctx, arg1):
         await ctx.send(noid)
         return
 
-    apeid = int(arg1)
-    if start <= apeid <= end:
-        await ctx.send(arg1)
+    apeId = int(arg1)
+    if start <= apeId <= end:
+        apes = []
+        with open('apes_list.txt', 'r') as f:
+            apes = json.load(f)
 
+        for ape in apes:
+            if ape["id"] == apeId:
+                ape["traits"]["body"] = ape["traits"]["ape"]
+                ape["traits"]["head"] = ape["traits"]["ape"]
+                ape["traits"]["eye"] = ape["traits"]["eyes"]
+                ape["traits"]["mouth attributes"] = ape["traits"]["mouth"]
+                ape = ApeFactory(ape["traits"])
+                ape.id = apeId
+
+                with BytesIO() as image_binary:
+                    image = ape.render()
+                    image.save(image_binary, 'PNG')
+                    image_binary.seek(0)
+                    await ctx.send(file=File(fp=image_binary, filename='image.png'))
+                    break
     else:
         await ctx.send(invid)
 

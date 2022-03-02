@@ -11,3 +11,4 @@ typing-extensions==4.0.1
 yarl==1.7.2
 
 pandas~=1.4.1
+Pillow~=9.0.1
