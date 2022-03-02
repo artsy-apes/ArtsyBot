@@ -9,3 +9,5 @@ multidict==6.0.2
 python-dotenv==0.19.2
 typing-extensions==4.0.1
 yarl==1.7.2
+
+pandas~=1.4.1

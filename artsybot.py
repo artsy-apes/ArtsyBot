@@ -1,4 +1,5 @@
 # bot.py
+import csv
 import os
 import random
 
@@ -7,11 +8,17 @@ import asyncio
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+import pandas as pd
+
 
 load_dotenv()
 TOKEN = os.environ.get("TOKEN")
 
 bot = commands.Bot(command_prefix='!')
+
+# Given Range for rarity
+start = 1
+end = 3777
 
 
 @bot.event
@@ -50,6 +57,118 @@ async def helps(ctx):
 
     await ctx.send(info)
 
+
+@bot.command(name='benis')
+@commands.cooldown(1, 10, commands.BucketType.channel)
+async def helps(ctx):
+    info = 'HAHA BENIS :DD'
+
+    await ctx.send(info)
+
+@bot.command(name='rare')
+@commands.cooldown(1, 1, commands.BucketType.channel)
+async def args(ctx, arg1):
+    noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
+    invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
+
+    try:
+        catch = int(arg1)
+
+    except ValueError:
+        await ctx.send(noid)
+        return
+
+    apeid = int(arg1)
+
+    if start <= apeid <= end:
+        csv_path = "raritysheet.csv"
+        sheetread = pd.read_csv(csv_path, index_col=False)
+        sheet = csv.reader(sheetread.to_csv(index=None).split("\n"))
+
+        for ape in sheet:
+            if ape[0] == str(apeid):
+
+                cleaned_traits = [ape[9].replace(',', '.'), ape[10].replace(',', '.'), ape[11].replace(',', '.'),
+                                  ape[12].replace(',', '.'), ape[13].replace(',', '.'), ape[14].replace(',', '.'),
+                                  ape[15].replace(',', '.'),  ape[16].replace(',', '.')]
+
+                traitpercentages = [float(cleaned_traits[0].strip('%')), float(cleaned_traits[1].strip('%')),
+                                    float(cleaned_traits[2].strip('%')),
+                                    float(cleaned_traits[3].strip('%')), float(cleaned_traits[4].strip('%')),
+                                    float(cleaned_traits[5].strip('%')),
+                                    float(cleaned_traits[6].strip('%')), float(cleaned_traits[7].strip('%'))]
+
+                rarest_trait = min(traitpercentages)
+                for i in range(8):
+                    if traitpercentages[i] == rarest_trait:
+                        rt_string = ape[i - 7]
+
+                await ctx.send(rt_string)
+
+                rank = ape[23]
+                rankint = int(rank)
+                if rankint == 69:
+                    infomessage = 'This ape is ranked #{}. Nice ( ͡° ͜ʖ ͡°) \n'.format(rank)
+                    await ctx.send(infomessage)
+                    return
+
+                if rankint == 3777:
+                    infomessage = ('This ape is ranked #{}. That ought to be worth something by default if you ask me. '
+                                   'Is there really such a thing as "most common"? Isn\'t it all just too philosophical'
+                                   'to be determined with such finality? Look at this Ape and tell me he ain\'t '
+                                   'precious, I dare you.\n'.format(rank))
+                    await ctx.send(infomessage)
+                    return
+
+                if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
+                        rankint == 572 or rankint == 576:
+
+                    infomessage = ('₮Ⱨł₴ ₳₱Ɇ ł₴ Ɽ₳₦₭ɆĐ #{}. ᏖᏂᎥᏕ ᏗᎮᏋ ᎥᏕ  '
+                                   'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c'
+                                   '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n'
+                                   'I̷t̷ ̷i̷s̷ ̷o̷n̷l̷y̷ ̷s̷u̷b̷t̷l̷e̷. \n '
+                                   '̷i̷m̷p̷e̷r̷f̷e̷c̷t̷i̷o̷n̷s̷ ̷w̷h̷i̷c̷h̷ ̷m̷a̷k̷e̷ '
+                                   '̷s̷o̷m̷e̷t̷h̷i̷n̷g̷ ̷t̷r̷u̷l̷y̷ ̷p̷e̷r̷f̷e̷c̷t̷.̷'.format(rank))
+
+                    await ctx.send(infomessage)
+                    return
+
+                if rankint > 3333:
+                    infomessage = ('This ape is ranked #{}. Even my mechanical heart still loves it. '
+                                   'I hope you do too.\n'.format(rank))
+                    await ctx.send(infomessage)
+                    return
+
+                else:
+                    infomessage = 'This ape is ranked #{}.\n'.format(rank)
+                    await ctx.send(infomessage)
+                    return
+
+            else:
+                continue
+
+    else:
+        await ctx.send(invid)
+
+@bot.command(name='hq')
+@commands.cooldown(1, 1, commands.BucketType.channel)
+async def args(ctx, arg1):
+    noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
+    invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
+
+    try:
+        catch = int(arg1)
+
+    except ValueError:
+        await ctx.send(noid)
+        return
+
+    apeid = int(arg1)
+    if start <= apeid <= end:
+        await ctx.send(arg1)
+
+    else:
+        await ctx.send(invid)
 
 @bot.command(name='socials')
 @commands.cooldown(1, 20, commands.BucketType.channel)
