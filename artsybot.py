@@ -463,6 +463,8 @@ def create_image_by_id(apeId):
             ape["traits"]["head"] = ape["traits"]["ape"]
             ape["traits"]["eye"] = ape["traits"]["eyes"]
             ape["traits"]["mouth attributes"] = ape["traits"]["mouth"]
+            if ape["traits"]["outfit"] == "Go ***** Yourself Tee":
+                ape["traits"]["outfit"] = "Go Shill Yourself Tee"
             ape = ApeFactory(ape["traits"])
             ape.id = apeId
             return ape.render()
