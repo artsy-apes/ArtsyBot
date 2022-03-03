@@ -85,7 +85,7 @@ async def helps(ctx):
 
 
 @bot.command(name='rare')
-@commands.cooldown(1, 1, commands.BucketType.channel)
+# @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
     if ctx.channel.name == "｜📈｜𝐑𝐚𝐫𝐢𝐭𝐲𝐇𝐐" or "｜🎁｜𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐬":
         noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
