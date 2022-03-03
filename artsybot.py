@@ -87,7 +87,7 @@ async def helps(ctx):
 @bot.command(name='rare')
 # @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
-    if ctx.channel.name == "｜📈｜𝐑𝐚𝐫𝐢𝐭𝐲𝐇𝐐" or "｜🎁｜𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐬":
+    if ctx.channel.id == 948992423332307014 or ctx.channel.id == 945785471617888307:
         noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
         invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
 
@@ -141,7 +141,7 @@ async def args(ctx, arg1):
                                   '<@689506328896602150> to claim' \
                                   ' your prize, you lucky son of a gun :) Put your hands in da aaaaaaaair!'
 
-                    if rankint in Singleton().luckyids and ctx.channel.name == "｜🎁｜𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐬":
+                    if rankint in Singleton().luckyids and ctx.channel.id == 948992423332307014:
                         Singleton().luckyids.remove(rankint)
                         await ctx.send(infomessage, file=discord.File('giveaways.jpg'))
                         return
