@@ -7,6 +7,7 @@ import random
 import asyncio
 from io import BytesIO
 
+import discord
 from discord import File
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
@@ -25,8 +26,21 @@ start = 1
 end = 3777
 
 
+class Singleton(object):
+    _instance = None
+    luckyids = [1, 2921, 777]
+
+    def __new__(class_, *args, **kwargs):
+        if not isinstance(class_._instance, class_):
+            class_._instance = object.__new__(class_, *args, **kwargs)
+        return class_._instance
+
+
 @bot.event
 async def on_ready():
+
+    Singleton()
+
     now = datetime.utcnow()
     if now.minute < 42:
         next_post_time = now + timedelta(minutes=(42 - now.minute))
@@ -69,10 +83,11 @@ async def helps(ctx):
 
     await ctx.send(info)
 
+
 @bot.command(name='rare')
 @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
-    if ctx.channel.name == "｜📈｜𝐑𝐚𝐫𝐢𝐭𝐲𝐇𝐐":
+    if ctx.channel.name == "｜📈｜𝐑𝐚𝐫𝐢𝐭𝐲𝐇𝐐" or "｜🎁｜𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐬":
         noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
         invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
 
@@ -98,7 +113,6 @@ async def args(ctx, arg1):
 
                     traits = [ape[1], ape[2], ape[3], ape[4], ape[5], ape[6], ape[7], ape[8]]
 
-
                     cleaned_traits = [ape[9].replace(',', '.'), ape[10].replace(',', '.'), ape[11].replace(',', '.'),
                                       ape[12].replace(',', '.'), ape[13].replace(',', '.'), ape[14].replace(',', '.'),
                                       ape[15].replace(',', '.'), ape[16].replace(',', '.')]
@@ -119,10 +133,19 @@ async def args(ctx, arg1):
                     while sexy_trait in ["None", "Nothing"]:
                         sexy_trait = random.choice(traits)
 
-
                     # Print rank specific flavor texts
                     rank = ape[23]
                     rankint = int(rank)
+
+                    infomessage = 'DING DING DING!! Congratulations, you hit a LUCKY ID! Please DM ' \
+                                  '<@689506328896602150> to claim' \
+                                  ' your prize, you lucky son of a gun :) Put your hands in da aaaaaaaair!'
+
+                    if rankint in Singleton().luckyids and ctx.channel.name == "｜🎁｜𝐏𝐫𝐞𝐬𝐞𝐧𝐭𝐬":
+                        Singleton().luckyids.remove(rankint)
+                        await ctx.send(infomessage, file=discord.File('giveaways.jpg'))
+                        return
+
                     if rankint == 69:
                         infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%.\n' \
                                       ' Nice ( ͡° ͜ʖ ͡°) Sexiest trait: {} \n'.format(rank, rt_string, rarest_trait,
@@ -132,7 +155,6 @@ async def args(ctx, arg1):
                             image_binary.seek(0)
                             await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
                         return
-
 
                     if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
                             rankint == 807:
@@ -156,8 +178,9 @@ async def args(ctx, arg1):
                                        'That ought to be worth something by default if you ask me. '
                                        'Is there really such a thing as "most common"? Isn\'t it all just too philosophical'
                                        ' to be determined with such finality? Look at this Ape and tell me he ain\'t '
-                                       'precious, I dare you. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
-                                                                                          sexy_trait))
+                                       'precious, I dare you. \nSexiest trait: {}\n'.format(rank, rt_string,
+                                                                                            rarest_trait,
+                                                                                            sexy_trait))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -168,7 +191,7 @@ async def args(ctx, arg1):
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'Even my mechanical heart still loves it. '
                                        'I hope you do too. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
-                                                                                       sexy_trait))
+                                                                                         sexy_trait))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -313,6 +336,7 @@ async def args(ctx, arg1):
         else:
             await ctx.send(invid)
 
+
 @bot.command(name='hq')
 @commands.cooldown(1, 1, commands.BucketType.channel)
 async def hq(ctx, arg1):
@@ -337,6 +361,7 @@ async def hq(ctx, arg1):
 
     else:
         await ctx.send(invid)
+
 
 @bot.command(name='socials')
 @commands.cooldown(1, 20, commands.BucketType.channel)
@@ -441,6 +466,7 @@ def create_image_by_id(apeId):
             ape = ApeFactory(ape["traits"])
             ape.id = apeId
             return ape.render()
+
 
 def main():
     bot.run(TOKEN)
