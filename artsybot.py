@@ -72,245 +72,246 @@ async def helps(ctx):
 @bot.command(name='rare')
 @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
-    noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
-    invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
+    if ctx.channel.name == "｜📈｜𝐑𝐚𝐫𝐢𝐭𝐲𝐇𝐐":
+        noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
+        invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
 
-    try:
-        catch = int(arg1)
+        try:
+            catch = int(arg1)
 
-    except ValueError:
-        await ctx.send(noid)
-        return
+        except ValueError:
+            await ctx.send(noid)
+            return
 
-    apeid = int(arg1)
+        apeid = int(arg1)
 
-    if start <= apeid <= end:
-        csv_path = "raritysheet.csv"
-        sheetread = pd.read_csv(csv_path, index_col=False)
-        sheet = csv.reader(sheetread.to_csv(index=None).split("\n"))
+        if start <= apeid <= end:
+            csv_path = "raritysheet.csv"
+            sheetread = pd.read_csv(csv_path, index_col=False)
+            sheet = csv.reader(sheetread.to_csv(index=None).split("\n"))
 
-        # Find rarest trait
-        for ape in sheet:
-            if ape[0] == str(apeid):
+            # Find rarest trait
+            for ape in sheet:
+                if ape[0] == str(apeid):
 
-                ape_image = create_image_by_id(apeid)
+                    ape_image = create_image_by_id(apeid)
 
-                traits = [ape[1], ape[2], ape[3], ape[4], ape[5], ape[6], ape[7], ape[8]]
+                    traits = [ape[1], ape[2], ape[3], ape[4], ape[5], ape[6], ape[7], ape[8]]
 
 
-                cleaned_traits = [ape[9].replace(',', '.'), ape[10].replace(',', '.'), ape[11].replace(',', '.'),
-                                  ape[12].replace(',', '.'), ape[13].replace(',', '.'), ape[14].replace(',', '.'),
-                                  ape[15].replace(',', '.'), ape[16].replace(',', '.')]
+                    cleaned_traits = [ape[9].replace(',', '.'), ape[10].replace(',', '.'), ape[11].replace(',', '.'),
+                                      ape[12].replace(',', '.'), ape[13].replace(',', '.'), ape[14].replace(',', '.'),
+                                      ape[15].replace(',', '.'), ape[16].replace(',', '.')]
 
-                traitpercentages = [float(cleaned_traits[0].strip('%')), float(cleaned_traits[1].strip('%')),
-                                    float(cleaned_traits[2].strip('%')),
-                                    float(cleaned_traits[3].strip('%')), float(cleaned_traits[4].strip('%')),
-                                    float(cleaned_traits[5].strip('%')),
-                                    float(cleaned_traits[6].strip('%')), float(cleaned_traits[7].strip('%'))]
+                    traitpercentages = [float(cleaned_traits[0].strip('%')), float(cleaned_traits[1].strip('%')),
+                                        float(cleaned_traits[2].strip('%')),
+                                        float(cleaned_traits[3].strip('%')), float(cleaned_traits[4].strip('%')),
+                                        float(cleaned_traits[5].strip('%')),
+                                        float(cleaned_traits[6].strip('%')), float(cleaned_traits[7].strip('%'))]
 
-                rarest_trait = min(traitpercentages)
-                for i in range(8):
-                    if traitpercentages[i] == rarest_trait:
-                        rt_string = str(traits[i])
-                        continue
+                    rarest_trait = min(traitpercentages)
+                    for i in range(8):
+                        if traitpercentages[i] == rarest_trait:
+                            rt_string = str(traits[i])
+                            continue
 
-                sexy_trait = random.choice(traits)
-                while sexy_trait in ["None", "Nothing"]:
                     sexy_trait = random.choice(traits)
+                    while sexy_trait in ["None", "Nothing"]:
+                        sexy_trait = random.choice(traits)
 
 
-                # Print rank specific flavor texts
-                rank = ape[23]
-                rankint = int(rank)
-                if rankint == 69:
-                    infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%.\n' \
-                                  ' Nice ( ͡° ͜ʖ ͡°) Sexiest trait: {} \n'.format(rank, rt_string, rarest_trait,
-                                                                                  sexy_trait)
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    # Print rank specific flavor texts
+                    rank = ape[23]
+                    rankint = int(rank)
+                    if rankint == 69:
+                        infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%.\n' \
+                                      ' Nice ( ͡° ͜ʖ ͡°) Sexiest trait: {} \n'.format(rank, rt_string, rarest_trait,
+                                                                                      sexy_trait)
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
 
-                if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
-                        rankint == 807:
-                    infomessage = ('₮Ⱨł₴ ₳₱Ɇ ł₴ Ɽ₳₦₭ɆĐ #{}. ᏖᏂᎥᏕ ᏗᎮᏋ ᎥᏕ  '
-                                   'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c'
-                                   '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n'
-                                   'sı ʇıɐɹʇ ʇsǝɹɐɹ sʇI {} ta {}%. '
-                                   'I̷t̷ ̷i̷s̷ ̷o̷n̷l̷y̷ ̷s̷u̷b̷t̷l̷e̷. \n '
-                                   '̷i̷m̷p̷e̷r̷f̷e̷c̷t̷i̷o̷n̷s̷ ̷w̷h̷i̷c̷h̷ ̷m̷a̷k̷e̷ '
-                                   '̷s̷o̷m̷e̷t̷h̷i̷n̷g̷ ̷t̷r̷u̷l̷y̷ '
-                                   '̷p̷e̷r̷f̷e̷c̷t̷.̷'.format(rank, rt_string, rarest_trait))
+                    if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
+                            rankint == 807:
+                        infomessage = ('₮Ⱨł₴ ₳₱Ɇ ł₴ Ɽ₳₦₭ɆĐ #{}. ᏖᏂᎥᏕ ᏗᎮᏋ ᎥᏕ  '
+                                       'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c'
+                                       '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n'
+                                       'sı ʇıɐɹʇ ʇsǝɹɐɹ sʇI {} ta {}%. '
+                                       'I̷t̷ ̷i̷s̷ ̷o̷n̷l̷y̷ ̷s̷u̷b̷t̷l̷e̷. \n '
+                                       '̷i̷m̷p̷e̷r̷f̷e̷c̷t̷i̷o̷n̷s̷ ̷w̷h̷i̷c̷h̷ ̷m̷a̷k̷e̷ '
+                                       '̷s̷o̷m̷e̷t̷h̷i̷n̷g̷ ̷t̷r̷u̷l̷y̷ '
+                                       '̷p̷e̷r̷f̷e̷c̷t̷.̷'.format(rank, rt_string, rarest_trait))
 
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 3699:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'That ought to be worth something by default if you ask me. '
-                                   'Is there really such a thing as "most common"? Isn\'t it all just too philosophical'
-                                   ' to be determined with such finality? Look at this Ape and tell me he ain\'t '
-                                   'precious, I dare you. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
-                                                                                      sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 3699:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'That ought to be worth something by default if you ask me. '
+                                       'Is there really such a thing as "most common"? Isn\'t it all just too philosophical'
+                                       ' to be determined with such finality? Look at this Ape and tell me he ain\'t '
+                                       'precious, I dare you. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
+                                                                                          sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 3333:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'Even my mechanical heart still loves it. '
-                                   'I hope you do too. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
-                                                                                   sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 3333:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'Even my mechanical heart still loves it. '
+                                       'I hope you do too. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
+                                                                                       sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 2500:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'What a beautiful specimen, it all just comes together real nice. '
-                                   'Sharp dressed simian. \nSexiest trait: {}'
-                                   '.\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 2500:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'What a beautiful specimen, it all just comes together real nice. '
+                                       'Sharp dressed simian. \nSexiest trait: {}'
+                                       '.\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 1888:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'It\'s got some real appeel, the real deal, so ideal I\'d steal if it weren\'t '
-                                   'consanguineal. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 1888:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'It\'s got some real appeel, the real deal, so ideal I\'d steal if it weren\'t '
+                                       'consanguineal. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 1333:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   '*Will Smith Voice* That\'s hot. Ohhhhh das hot. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 1333:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       '*Will Smith Voice* That\'s hot. Ohhhhh das hot. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 999:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'You could weigh this guys\' panache in bananas, but you\'d need to cut down '
-                                   'acres of jungle, so please don\'t. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 999:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'You could weigh this guys\' panache in bananas, but you\'d need to cut down '
+                                       'acres of jungle, so please don\'t. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 666:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   '3 Digits! This guy is out on mole patrol. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 666:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       '3 Digits! This guy is out on mole patrol. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 333:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   '3 Digits! Only 3! Looking dope as fuck. For real. Legend! \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 333:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       '3 Digits! Only 3! Looking dope as fuck. For real. Legend! \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 99:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'Low 3 digits! This should knock your lucky socks off man!'
-                                   ' A real gem. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 99:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'Low 3 digits! This should knock your lucky socks off man!'
+                                       ' A real gem. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 49:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'TOP 100! Where are the \'100\' reactions?? What a strapping simian, '
-                                   'absolutely magnificent. The algorithm has truly blessed this Ape with '
-                                   'all the good, good stuff. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 49:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'TOP 100! Where are the \'100\' reactions?? What a strapping simian, '
+                                       'absolutely magnificent. The algorithm has truly blessed this Ape with '
+                                       'all the good, good stuff. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 10:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%.\n\n'
-                                   'So far up the treetops the air must be getting thin! This one is decked out to '
-                                   'the max, the origin of jealousy. Stebo is excited ay eff to paint it, '
-                                   'that\'s for sure. \nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 10:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%.\n\n'
+                                       'So far up the treetops the air must be getting thin! This one is decked out to '
+                                       'the max, the origin of jealousy. Stebo is excited ay eff to paint it, '
+                                       'that\'s for sure. \nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint > 1:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%.\n\n'
-                                   'TOP 10!!! Throw your hands in the air!! My circuit-board is getting hot, '
-                                   'peak banana bonanza in the house. If you\'re lucky enough to own it you\'re '
-                                   'either supremely lucky or supremely loaded. Either way, congrats buddy!! '
-                                   '\nSexiest trait: '
-                                   '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint > 1:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%.\n\n'
+                                       'TOP 10!!! Throw your hands in the air!! My circuit-board is getting hot, '
+                                       'peak banana bonanza in the house. If you\'re lucky enough to own it you\'re '
+                                       'either supremely lucky or supremely loaded. Either way, congrats buddy!! '
+                                       '\nSexiest trait: '
+                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
-                if rankint == 1:
-                    infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                   'There can only be one - And this is the one. Take off your slippers, you are on '
-                                   'holy ground. All hail King Midas. Golden ArtsyApe Logo Reactions ONLY on this post'
-                                   ', for you are in the presence of royalty. '
-                                   'Sexiest trait: {}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    if rankint == 1:
+                        infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
+                                       'There can only be one - And this is the one. Take off your slippers, you are on '
+                                       'holy ground. All hail King Midas. Golden ArtsyApe Logo Reactions ONLY on this post'
+                                       ', for you are in the presence of royalty. '
+                                       'Sexiest trait: {}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
+
+                    else:
+                        infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%. Sexiest trait: {}' \
+                                      '\n'.format(rank, rt_string, rarest_trait, random.choice(traits))
+                        with BytesIO() as image_binary:
+                            ape_image.save(image_binary, 'PNG')
+                            image_binary.seek(0)
+                            await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                        return
 
                 else:
-                    infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%. Sexiest trait: {}' \
-                                  '\n'.format(rank, rt_string, rarest_trait, random.choice(traits))
-                    with BytesIO() as image_binary:
-                        ape_image.save(image_binary, 'PNG')
-                        image_binary.seek(0)
-                        await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
-                    return
+                    continue
 
-            else:
-                continue
-
-    else:
-        await ctx.send(invid)
+        else:
+            await ctx.send(invid)
 
 @bot.command(name='hq')
 @commands.cooldown(1, 1, commands.BucketType.channel)
