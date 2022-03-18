@@ -419,7 +419,7 @@ async def socials(ctx):
     await ctx.send(social)
 
 
-@tasks.loop(seconds=7200)
+@tasks.loop(seconds=86400)
 async def post_fact():
     ape_facts = [
         ('Apes are herbivores for the most part, meaning that they eat fruit and leaves. '
