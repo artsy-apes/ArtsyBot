@@ -17,7 +17,6 @@ import pandas as pd
 from Ape.ApeFactory import ApeFactory
 
 load_dotenv()
-TOKEN = os.environ.get("TOKEN")
 
 bot = commands.Bot(command_prefix='!')
 
@@ -28,7 +27,7 @@ end = 3777
 
 class Singleton(object):
     _instance = None
-    luckyids = [1, 2921, 777]
+    luckyids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     def __new__(class_, *args, **kwargs):
         if not isinstance(class_._instance, class_):
@@ -84,10 +83,55 @@ async def helps(ctx):
     await ctx.send(info)
 
 
+@bot.command(name='swing')
+async def helps(ctx):
+    if ctx.channel.id == 948992423332307014:
+
+        user = ctx.message.author
+
+        bystander = random.choice(ctx.message.channel.guild.members)
+
+        bystander_id = str(bystander.id)
+
+        fails = ["But hilariously dives at air before falling down!",
+                 "But accidentally hits themselves on the head instead!",
+                 "But just ends up glazing the target without bursting it. Close but no cigar!",
+                 "The attempt is struck short by a terrible sudden itch deep within the fur, goddamned fleas!",
+                 "However, the bat cracks mid-swing and <@" + bystander_id + "> is hit in the chest! Ouch!",
+                 "But <@" + bystander_id + "> dispenses a banana peel before their feet to make them slip!",
+                 "Ouch! The Piñata swung first. What irony, though that thought only makes their head spin even more...",
+                 "A sneaky <@" + bystander_id + "> uses its robot arms and spins them around at the last second! "
+                                                "Whooooosh."]
+
+        wins = ["🏏💥🎊 **Major critical damage!** The target bursts wide open and a glowing orb is revealed - "
+                "A Whitelist Orb! 🔮 "
+                "Please let the good <@689506328896602150> know about your victory so he may put your name on it. "
+                "A new Piñata is swiftly installed :oranking:"]
+
+        role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
+        if role in user.roles:
+            await ctx.send(f"{user.name} swings at the Piñata using a Big League Bat...")
+            roll = random.randint(0, 110)
+        else:
+            await ctx.send(f"{user.name} swings at the Piñata...")
+            roll = random.randint(0, 220)
+
+        await asyncio.sleep(2)
+
+        if roll in Singleton().luckyids:
+            Singleton().luckyids.remove(roll)
+            info = random.choice(wins)
+            await ctx.send(info)
+
+        else:
+            info = random.choice(fails)
+            await ctx.send(info)
+
+
 @bot.command(name='rare')
 # @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
-    if ctx.channel.id == 948992423332307014 or ctx.channel.id == 945785471617888307:
+    if ctx.channel.id == 945785471617888307:
         noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
         invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
 
@@ -136,15 +180,6 @@ async def args(ctx, arg1):
                     # Print rank specific flavor texts
                     rank = ape[23]
                     rankint = int(rank)
-
-                    infomessage = 'DING DING DING!! Congratulations, you hit a LUCKY ID! Please DM ' \
-                                  '<@689506328896602150> to claim' \
-                                  ' your prize, you lucky son of a gun :) Put your hands in da aaaaaaaair!'
-
-                    if rankint in Singleton().luckyids and ctx.channel.id == 948992423332307014:
-                        Singleton().luckyids.remove(rankint)
-                        await ctx.send(infomessage, file=discord.File('giveaways.jpg'))
-                        return
 
                     if rankint == 69:
                         infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%.\n' \
