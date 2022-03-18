@@ -17,6 +17,7 @@ import pandas as pd
 from Ape.ApeFactory import ApeFactory
 
 load_dotenv()
+TOKEN = os.environ.get("TOKEN")
 
 bot = commands.Bot(command_prefix='!')
 
