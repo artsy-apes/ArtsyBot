@@ -28,7 +28,8 @@ end = 3777
 
 class Singleton(object):
     _instance = None
-    luckyids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    luckyids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+                29, 30]
 
     def __new__(class_, *args, **kwargs):
         if not isinstance(class_._instance, class_):
@@ -112,10 +113,10 @@ async def helps(ctx):
         role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
         if role in user.roles:
             await ctx.send(f"{user.name} swings at the Piñata using a Big League Bat...")
-            roll = random.randint(0, 110)
+            roll = random.randint(0, 300)
         else:
             await ctx.send(f"{user.name} swings at the Piñata...")
-            roll = random.randint(0, 220)
+            roll = random.randint(0, 600)
 
         await asyncio.sleep(2)
 
