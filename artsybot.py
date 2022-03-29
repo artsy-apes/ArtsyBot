@@ -39,7 +39,6 @@ class Singleton(object):
 
 @bot.event
 async def on_ready():
-
     Singleton()
 
     now = datetime.utcnow()
@@ -59,10 +58,10 @@ async def on_ready():
 @bot.command(name='info')
 @commands.cooldown(1, 20, commands.BucketType.channel)
 async def infos(ctx):
-    info = ('**Current Supply: 6942** \n'
-            '**Current Mint Date: Mid February** \n \n'
+    info = ('**Current Supply: 3777** \n'
+            '**Current Mint Date: Feb 19th, 2022** \n \n'
             'Our Roadmap can be found at <#906202985716133911> 🛣️ \n'
-            'For updates and info an how to get whitelisted see <#906216888902774794>! 🌖 \n \n'
+            'For updates see <#906216888902774794>! 🌖 \n \n'
             'Be sure to check out <https://www.artsyapes.com/> and <https://twitter.com/ARTSY_APES>! \n'
             'Enjoy the Banana Bonanza. 🍌 ')
 
@@ -94,29 +93,40 @@ async def helps(ctx):
         bystander = random.choice(ctx.message.channel.guild.members)
 
         bystander_id = str(bystander.id)
+        user_id = str(user.id)
 
         fails = ["But hilariously dives at air before falling down!",
                  "But accidentally hits themselves on the head instead!",
                  "But just ends up glazing the target without bursting it. Close but no cigar!",
-                 "The attempt is struck short by a terrible sudden itch deep within the fur, goddamned fleas!",
+                 "The attempt is struck short by a terrible sudden itch deep within <@" + user_id + "> 's fur, "
+                                                                                                    "goddamned fleas!",
                  "However, the bat cracks mid-swing and <@" + bystander_id + "> is hit in the chest! Ouch!",
                  "But <@" + bystander_id + "> dispenses a banana peel before their feet to make them slip!",
                  "Ouch! The Piñata swung first. What irony, though that thought only makes their head spin even more...",
                  "A sneaky <@" + bystander_id + "> uses its robot arms and spins them around at the last second! "
-                                                "Whooooosh."]
+                                                "Whooooosh.",
+                 "They didn't understand how to use the bat and did nothing with it before being removed "
+                 "from the stage!",
+                 "\"Did I get mixed up again while blinking?\" <@" + user_id + "> "
+                                                                               "thought, not realizing they had a blindfold on. Needless to say, they didn't hit.",
+                 "🏏💥🎊 **Major critical damage!** The target bursts wide open and... A bunch of bananas fall out!"
+                 "It looks like this one was a dud...",
+                 "The audience cheers for what seems to be a successful hit! The piñata bursts and explodes, but "
+                 "<@" + user_id + "> got too eager and showed they didn't have the blindfold on! The cheers turn into "
+                                  "boos."]
 
         wins = ["🏏💥🎊 **Major critical damage!** The target bursts wide open and a glowing orb is revealed - "
                 "A Whitelist Orb! 🔮 "
                 "Please let the good <@689506328896602150> know about your victory so he may put your name on it. "
-                "A new Piñata is swiftly installed :oranking:"]
+                "A new Piñata is swiftly installed!"]
 
         role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
         if role in user.roles:
             await ctx.send(f"{user.name} swings at the Piñata using a Big League Bat...")
-            roll = random.randint(0, 300)
+            roll = random.randint(0, 250)
         else:
             await ctx.send(f"{user.name} swings at the Piñata...")
-            roll = random.randint(0, 600)
+            roll = random.randint(0, 500)
 
         await asyncio.sleep(2)
 
@@ -194,7 +204,7 @@ async def args(ctx, arg1):
                         return
 
                     if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
-                            rankint == 807:
+                            rankint == 807 or rankint == 576:
                         infomessage = ('₮Ⱨł₴ ₳₱Ɇ ł₴ Ɽ₳₦₭ɆĐ #{}. ᏖᏂᎥᏕ ᏗᎮᏋ ᎥᏕ  '
                                        'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c'
                                        '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n'
@@ -405,7 +415,8 @@ async def hq(ctx, arg1):
 async def socials(ctx):
     social = ('**Social Media Links** \n'
               'ArtsyApes Twitter: <https://twitter.com/ARTSY_APES> \n'
-              'ArtsyApes Telegram: <https://t.me/artsyapes> \n'
+              'Secondary Market:  '
+              'https://marketplace.luart.io/collections/terra1vdwz6zlrk6ptsxu97dk43uup9frchuwse8s6d8\n'
               'ArtsyApes Instagram: <https://www.instagram.com/artsy.apes> \n \n'
 
               '🦍 Website 🦍 \n'
@@ -422,7 +433,7 @@ async def socials(ctx):
 
 @tasks.loop(seconds=86400)
 async def post_fact():
-    ape_facts = [
+    old_ape_facts = [
         ('Apes are herbivores for the most part, meaning that they eat fruit and leaves. '
          'Occasionally, some species do supplement their diet with bugs and other small insects. Yum!'),
 
@@ -483,6 +494,46 @@ async def post_fact():
 
         'Orangutans can drive golf-carts. https://youtu.be/V6ze-nVh2Bs'
     ]
+
+    ape_facts = ["We have covered the great apes’ incredible use of tools that shows some truly "
+                 "undeniable brainpower. There are also orangutans that are maths wizards, "
+                 "chimpanzees that have beaten their human trainers at memory games, "
+                 "and bonobos that can drum along to a beat.",
+                 "Baboons in Nigeria engage in contraception with plants. "
+                 "The female animals eat the fruits of the plant Vitex donaia, "
+                 "which contains the hormone progesterone.",
+                 "A Colombian woman claimed that she was raised by a colony of capuchin monkeys after being"
+                 "kidnapped and abandoned in the jungle when she was just 4 years old.",
+                 " All great apes sleep in nests and show sophisticated building techniques, "
+                 "using the differing way that sticks and twigs snap and bend to build comfy sleeping dens."
+                 " Apes make a new nest every night, as they rarely sleep in the same place twice.",
+                 "Who needs a pharmacy when you live in the forest?! Some lemur species use the forest to "
+                 "self medicate, "
+                 "acting as their own personal pharmacy. Red-fronted brown lemurs eat millipedes to get rid of "
+                 "gastrointestinal parasites, such as worms. "
+                 "It is thought that the toxins within the millipedes kill the parasites that set up home in the "
+                 "lemurs’ guts.",
+                 "A fact that few people know is that lemurs are considered the world’s oldest primates! "
+                 "The story of lemurs begins over 70 million years ago, long before humans. "
+                 "This was a world when lemur-like animals, the planet’s first primates, roamed "
+                 "Africa along with the dinosaurs. Scientists think that around 65 million years ago, "
+                 "lemurs rafted across the Indian Ocean to the island of Madagascar on floating vegetation. "
+                 "Over the next tens of millions of years, the lemurs evolved and diversified on Madagascar "
+                 "to the 112 species that we see today.",
+                 "Why did the monkey go to the doctor?\n"
+                 "It wasn’t peeling good.",
+                 "Monkeys like abstract paintings more:"
+                 "Monkeys\' visual cells react more strongly to distorted and abstract images that do "
+                 "not exist in their world than to normal images.",
+                 "Interestingly the Great apes can"
+                 "\'t swim. Due to this fact, zoos have to think twice about using water-filled "
+                 "moats around their compounds because they could easily drown.",
+                 "The infinite monkey theorem says that infinite number of monkeys hitting keys at "
+                 "random on an infinite number of typewriters for an infinite amount of time will type "
+                 "the complete works of William Shakespeare. For some reason, someone tested it with just six monkeys, "
+                 "one month and one keyboard. The monkeys did not write Shakespeare, proving absolutely nothing"
+                 "and producing no valuable data for further research."
+                 ]
 
     channel = bot.get_channel(938167547348545546)
     response = random.choice(ape_facts)
