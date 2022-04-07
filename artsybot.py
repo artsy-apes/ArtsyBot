@@ -29,7 +29,8 @@ end = 3777
 class Singleton(object):
     _instance = None
     luckyids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-                29, 30]
+                29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54
+        , 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
 
     def __new__(class_, *args, **kwargs):
         if not isinstance(class_._instance, class_):
@@ -97,7 +98,7 @@ async def helps(ctx):
 
         fails = ["But hilariously dives at air before falling down!",
                  "But accidentally hits themselves on the head instead!",
-                 "But just ends up glazing the target without bursting it. Close but no cigar!",
+                 "But just ends up flailing all over the place!",
                  "The attempt is struck short by a terrible sudden itch deep within <@" + user_id + "> 's fur, "
                                                                                                     "goddamned fleas!",
                  "However, the bat cracks mid-swing and <@" + bystander_id + "> is hit in the chest! Ouch!",
@@ -105,38 +106,64 @@ async def helps(ctx):
                  "Ouch! The Piñata swung first. What irony, though that thought only makes their head spin even more...",
                  "A sneaky <@" + bystander_id + "> uses its robot arms and spins them around at the last second! "
                                                 "Whooooosh.",
-                 "They didn't understand how to use the bat and did nothing with it before being removed "
+                 "They didn't understand how to use the bat and swung wildly in all directions before being removed "
                  "from the stage!",
                  "\"Did I get mixed up again while blinking?\" <@" + user_id + "> "
-                                                                               "thought, not realizing they had a blindfold on. Needless to say, they didn't hit.",
+                                                                               "thought, not realizing they had a "
+                                                                               "blindfold on. "
+                                                                               "They didn't hit.",
                  "🏏💥🎊 **Major critical damage!** The target bursts wide open and... A bunch of bananas fall out!"
                  "It looks like this one was a dud...",
-                 "The audience cheers for what seems to be a successful hit! The piñata bursts and explodes, but "
-                 "<@" + user_id + "> got too eager and showed they didn't have the blindfold on! The cheers turn into "
-                                  "boos."]
+                 "The bat is released from their hands and it flies off! Where did it go? A reserve bat is put on "
+                 "standby.",
+                 "They end up throwing it away instead! Whoooosh. ",
+                 "Many in the audience are frightened by the sheer intensity of the swing! "
+                 ]
 
-        wins = ["🏏💥🎊 **Major critical damage!** The target bursts wide open and a glowing orb is revealed - "
-                "A Whitelist Orb! 🔮 "
-                "Please let the good <@689506328896602150> know about your victory so he may put your name on it. "
-                "A new Piñata is swiftly installed!"]
+        wins = ["🏏💥🎊 **Major critical damage!** The target bursts wide open and a glowing banana orb is revealed - "
+                "A Whitelist Orb! 🔮 \n\n"
+                "Please go to <https://discord.gg/3KakSvv4> and let people in the #general chat know you're from "
+                "ArtsyApes to convert the Orb into a ticket to the Clubhouse. Enjoy the event and don't forget "
+                "to vote AA in #vote! A new Piñata is swiftly installed!"]
 
         role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
         if role in user.roles:
-            await ctx.send(f"{user.name} swings at the Piñata using a Big League Bat...")
-            roll = random.randint(0, 250)
+            await ctx.send(f"{user.name} squares up to swing at the Piñata using a Big League Bat...")
+            roll = random.randint(0, 150)
         else:
-            await ctx.send(f"{user.name} swings at the Piñata...")
-            roll = random.randint(0, 500)
+            await ctx.send(f"{user.name} squares up to swing at the Piñata...")
+            roll = random.randint(0, 250)
 
-        await asyncio.sleep(2)
+        swingspeed = str(random.randint(20, 75)) + " MPH."
+        await asyncio.sleep(3)
 
         if roll in Singleton().luckyids:
             Singleton().luckyids.remove(roll)
             info = random.choice(wins)
-            await ctx.send(info)
+            await ctx.send(info + " \n\nThe swing was measured at " + swingspeed, file=discord.File('lunaticwin.png'))
 
         else:
-            info = random.choice(fails)
+            missinches = roll - 77
+            missedby = missinches / 2 * 3 + random.random()
+            missedformat = "{:.2f}".format(missedby)
+            if missinches > 70:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by a whopping " + missedformat + \
+                       " inches. Several are injured. The swing was measured at " + swingspeed
+            elif missinches > 50:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by a whole " + missedformat + " inches." + \
+                       " Aim for the stars! The swing was measured at " + swingspeed
+            elif missinches > 25:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
+                       " Come again! The swing was measured at " + swingspeed
+            elif missinches > 10:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
+                       " Almost... The swing was measured at " + swingspeed
+            elif missinches > 3:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
+                       " Solid At-Bat! The swing was measured at " + swingspeed
+            else:
+                info = random.choice(fails) + " \n\n<@" + user_id + "> missed by only " + missedformat + " inches!" + \
+                       " The Piñata is frightened... The swing was measured at " + swingspeed
             await ctx.send(info)
 
 
