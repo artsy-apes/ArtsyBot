@@ -120,9 +120,8 @@ async def helps(ctx):
 
         wins = ["🏏💥🎊 **Major critical damage!** The target bursts wide open and a glowing banana orb is revealed - "
                 "A Whitelist Orb! 🔮 \n\n"
-                "Please go to <https://discord.gg/3KakSvv4> and let people in the #general chat know you're from "
-                "ArtsyApes to convert the Orb into a ticket to the Clubhouse. Enjoy the event and don't forget "
-                "to vote AA in #vote! A new Piñata is swiftly installed!"]
+                "Tell the good Dr. Gonzo about your swing. Your favorite Ape is gonna be on frickin Times Square!!"
+                " A new Piñata is swiftly installed."]
 
         role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
         if role in user.roles:
@@ -144,19 +143,19 @@ async def helps(ctx):
             missinches = random.randint(1, 3) * roll
             missedby = missinches / 2 * 3 + random.random()
             missedformat = "{:.2f}".format(missedby)
-            if missinches > 70:
+            if missinches > 40:
                 info = random.choice(fails) + " \n\n<@" + user_id + "> missed by a whopping " + missedformat + \
                        " inches. Several are injured. The swing was measured at " + swingspeed
-            elif missinches > 50:
+            elif missinches > 30:
                 info = random.choice(fails) + " \n\n<@" + user_id + "> missed by a whole " + missedformat + " inches." + \
                        " Aim for the stars! The swing was measured at " + swingspeed
             elif missinches > 25:
                 info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
                        " Come again! The swing was measured at " + swingspeed
-            elif missinches > 10:
+            elif missinches > 12:
                 info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
                        " Almost... The swing was measured at " + swingspeed
-            elif missinches > 3:
+            elif missinches > 5:
                 info = random.choice(fails) + " \n\n<@" + user_id + "> missed by " + missedformat + " inches." + \
                        " Solid At-Bat! The swing was measured at " + swingspeed
             else:
