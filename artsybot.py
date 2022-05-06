@@ -28,9 +28,7 @@ end = 3777
 
 class Singleton(object):
     _instance = None
-    luckyids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-                29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54
-        , 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
+    luckyids = [1, 2, 3, 4]
 
     def __new__(class_, *args, **kwargs):
         if not isinstance(class_._instance, class_):
@@ -59,8 +57,8 @@ async def on_ready():
 @bot.command(name='info')
 @commands.cooldown(1, 20, commands.BucketType.channel)
 async def infos(ctx):
-    info = ('**Current Supply: 3777** \n'
-            '**Current Mint Date: Feb 19th, 2022** \n \n'
+    info = ('**Supply: 3777** \n'
+            '**Mint Date: Feb 19th, 2022** \n \n'
             'Our Roadmap can be found at <#906202985716133911> 🛣️ \n'
             'For updates see <#906216888902774794>! 🌖 \n \n'
             'Be sure to check out <https://www.artsyapes.com/> and <https://twitter.com/ARTSY_APES>! \n'
@@ -129,10 +127,10 @@ async def helps(ctx):
         role = discord.utils.find(lambda r: r.name == 'Simian Keepers', ctx.message.guild.roles)
         if role in user.roles:
             await ctx.send(f"{user.name} squares up to swing at the Piñata using a Big League Bat...")
-            roll = random.randint(0, 150)
+            roll = random.randint(0, 22)
         else:
             await ctx.send(f"{user.name} squares up to swing at the Piñata...")
-            roll = random.randint(0, 250)
+            roll = random.randint(0, 33)
 
         swingspeed = str(random.randint(20, 75)) + " MPH."
         await asyncio.sleep(3)
@@ -140,10 +138,10 @@ async def helps(ctx):
         if roll in Singleton().luckyids:
             Singleton().luckyids.remove(roll)
             info = random.choice(wins)
-            await ctx.send(info + " \n\nThe swing was measured at " + swingspeed, file=discord.File('lunaticwin.png'))
+            await ctx.send(info + " \n\nThe swing was measured at " + swingspeed, file=discord.File('ce8.png'))
 
         else:
-            missinches = roll - 77
+            missinches = random.randint(1, 3) * roll
             missedby = missinches / 2 * 3 + random.random()
             missedformat = "{:.2f}".format(missedby)
             if missinches > 70:
