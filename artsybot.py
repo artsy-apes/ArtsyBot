@@ -164,11 +164,61 @@ async def helps(ctx):
             await ctx.send(info)
 
 
+@bot.command(name='findrare')
+# @commands.cooldown(1, 1, commands.BucketType.channel)
+async def args(ctx, arg1):
+    if ctx.channel.id == 945785471617888307:
+        noid = 'Invalid rank! Sowwy :( Please type a number after idrank in Range: 1 - 3777\n'
+        invid = 'Invalid rank! Sowwy :( Please use a number in Range: 1 - 3777\n'
+
+        try:
+            catch = int(arg1)
+
+        except ValueError:
+            await ctx.send(noid)
+            return
+
+        if 0 >= int(arg1) or int(arg1) > 3777:
+            await ctx.send(invid)
+
+        csv_path = "raritynewbyid.csv"
+        sheetread = pd.read_csv(csv_path, index_col=False)
+        sheet = csv.reader(sheetread.to_csv(index=None).split("\n"))
+
+        aperank = int(arg1)
+
+        for ape in sheet:
+            if ape[27] == str(aperank):
+
+                ape_image = create_image_by_id(int(ape[0]))
+
+                traits = ape[1], ape[2], ape[3], ape[4], ape[5], ape[6], ape[7], ape[8]
+
+                totalscoref = float(ape[26].replace(',', '.'))
+                totalscore = float(f'{totalscoref:.2f}')
+
+                if ape[28] == 'Y':
+
+                    infomessage = 'The Ape ranked #{} has the ID #{}. Its traits are {}.\n It is ' \
+                                  'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c' \
+                                  '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n\n'.format(ape[27], ape[0], traits)
+
+                else:
+                    infomessage = 'The Ape ranked #{} has the ID #{}. Its traits are {}.\n\nIts total score is {}/100.\n'.format(ape[27], ape[0],
+                                                                                                  traits, totalscore)
+
+                with BytesIO() as image_binary:
+                    ape_image.save(image_binary, 'PNG')
+                    image_binary.seek(0)
+                    await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
+                    return
+
+
 @bot.command(name='rare')
 # @commands.cooldown(1, 1, commands.BucketType.channel)
 async def args(ctx, arg1):
     if ctx.channel.id == 945785471617888307:
-        noid = 'Invalid ID! Sowwy :( Please type a number after hq in Range: 1 - 3777\n'
+        noid = 'Invalid ID! Sowwy :( Please type a number after rare in Range: 1 - 3777\n'
         invid = 'Invalid ID! Sowwy :( Please use a number in Range: 1 - 3777\n'
 
         try:
@@ -181,7 +231,7 @@ async def args(ctx, arg1):
         apeid = int(arg1)
 
         if start <= apeid <= end:
-            csv_path = "raritysheet.csv"
+            csv_path = "raritynewbyid.csv"
             sheetread = pd.read_csv(csv_path, index_col=False)
             sheet = csv.reader(sheetread.to_csv(index=None).split("\n"))
 
@@ -213,22 +263,27 @@ async def args(ctx, arg1):
                     while sexy_trait in ["None", "Nothing"]:
                         sexy_trait = random.choice(traits)
 
+                    totalscoref = float(ape[26].replace(',', '.'))
+                    totalscore = float(f'{totalscoref:.2f}')
+
                     # Print rank specific flavor texts
-                    rank = ape[23]
+                    rank = ape[27]
                     rankint = int(rank)
 
                     if rankint == 69:
                         infomessage = 'This ape is ranked #{}. Its rarest trait is {} at {}%.\n' \
-                                      ' Nice ( ͡° ͜ʖ ͡°) Sexiest trait: {} \n'.format(rank, rt_string, rarest_trait,
-                                                                                      sexy_trait)
+                                      ' Nice ( ͡° ͜ʖ ͡°) \nSexiest trait: {} \n\nTotal Score: {}/100\n'.format(rank,
+                                                                                                               rt_string,
+                                                                                                               rarest_trait,
+                                                                                                               sexy_trait,
+                                                                                                               totalscore)
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
                             await ctx.send(infomessage, file=File(fp=image_binary, filename='image.png'))
                         return
 
-                    if rankint == 91 or rankint == 101 or rankint == 115 or rankint == 262 or rankint == 287 or \
-                            rankint == 807 or rankint == 576:
+                    if ape[28] == "Y":
                         infomessage = ('₮Ⱨł₴ ₳₱Ɇ ł₴ Ɽ₳₦₭ɆĐ #{}. ᏖᏂᎥᏕ ᏗᎮᏋ ᎥᏕ  '
                                        'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c'
                                        '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n'
@@ -249,9 +304,11 @@ async def args(ctx, arg1):
                                        'That ought to be worth something by default if you ask me. '
                                        'Is there really such a thing as "most common"? Isn\'t it all just too philosophical'
                                        ' to be determined with such finality? Look at this Ape and tell me he ain\'t '
-                                       'precious, I dare you. \nSexiest trait: {}\n'.format(rank, rt_string,
-                                                                                            rarest_trait,
-                                                                                            sexy_trait))
+                                       'precious, I dare you. \nSexiest trait: {}\n\nTotal Score: {}/100\n'.format(rank,
+                                                                                                                   rt_string,
+                                                                                                                   rarest_trait,
+                                                                                                                   sexy_trait,
+                                                                                                                   totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -261,8 +318,11 @@ async def args(ctx, arg1):
                     if rankint > 3333:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'Even my mechanical heart still loves it. '
-                                       'I hope you do too. \nSexiest trait: {}\n'.format(rank, rt_string, rarest_trait,
-                                                                                         sexy_trait))
+                                       'I hope you do too. \nSexiest trait: {}\n\nTotal Score: {}/100\n'.format(rank,
+                                                                                                                rt_string,
+                                                                                                                rarest_trait,
+                                                                                                                sexy_trait,
+                                                                                                                totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -272,8 +332,8 @@ async def args(ctx, arg1):
                     if rankint > 2500:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'What a beautiful specimen, it all just comes together real nice. '
-                                       'Sharp dressed simian. \nSexiest trait: {}'
-                                       '.\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       'Sharp dressed simian. \nSexiest trait: {}\n\nTotal Score: {}/100\n'
+                                       .format(rank, rt_string, rarest_trait, sexy_trait, totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -284,7 +344,8 @@ async def args(ctx, arg1):
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'It\'s got some real appeel, the real deal, so ideal I\'d steal if it weren\'t '
                                        'consanguineal. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -294,7 +355,8 @@ async def args(ctx, arg1):
                     if rankint > 1333:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        '*Will Smith Voice* That\'s hot. Ohhhhh das hot. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -305,7 +367,8 @@ async def args(ctx, arg1):
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'You could weigh this guys\' panache in bananas, but you\'d need to cut down '
                                        'acres of jungle, so please don\'t. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -315,7 +378,8 @@ async def args(ctx, arg1):
                     if rankint > 666:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        '3 Digits! This guy is out on mole patrol. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -324,8 +388,10 @@ async def args(ctx, arg1):
 
                     if rankint > 333:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                       '3 Digits! Only 3! Looking dope as fuck. For real. Legend! \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       'Not a fan of judging art like this, but it still gets me real riled up.'
+                                       ' \nSexiest trait: '
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -336,7 +402,8 @@ async def args(ctx, arg1):
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
                                        'Low 3 digits! This should knock your lucky socks off man!'
                                        ' A real gem. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -345,10 +412,11 @@ async def args(ctx, arg1):
 
                     if rankint > 49:
                         infomessage = ('This ape is ranked #{}. Its rarest trait is {} at {}%. \n\n'
-                                       'TOP 100! Where are the \'100\' reactions?? What a strapping simian, '
-                                       'absolutely magnificent. The algorithm has truly blessed this Ape with '
-                                       'all the good, good stuff. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       'TOP 100! What a strapping simian, '
+                                       'absolutely magnificent. The algorithm got wild with this one. \n'
+                                       'Sexiest trait: '
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -360,7 +428,8 @@ async def args(ctx, arg1):
                                        'So far up the treetops the air must be getting thin! This one is decked out to '
                                        'the max, the origin of jealousy. Stebo is excited ay eff to paint it, '
                                        'that\'s for sure. \nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -373,7 +442,8 @@ async def args(ctx, arg1):
                                        'peak banana bonanza in the house. If you\'re lucky enough to own it you\'re '
                                        'either supremely lucky or supremely loaded. Either way, congrats buddy!! '
                                        '\nSexiest trait: '
-                                       '{}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       '{}\n\nTotal Score: {}/100\n'.format(rank, rt_string, rarest_trait, sexy_trait,
+                                                                            totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
@@ -385,7 +455,9 @@ async def args(ctx, arg1):
                                        'There can only be one - And this is the one. Take off your slippers, you are on '
                                        'holy ground. All hail King Midas. Golden ArtsyApe Logo Reactions ONLY on this post'
                                        ', for you are in the presence of royalty. '
-                                       'Sexiest trait: {}\n'.format(rank, rt_string, rarest_trait, sexy_trait))
+                                       'Sexiest trait: {}\n\nTotal Score: {}/100\n'.format(rank, rt_string,
+                                                                                           rarest_trait, sexy_trait,
+                                                                                           totalscore))
                         with BytesIO() as image_binary:
                             ape_image.save(image_binary, 'PNG')
                             image_binary.seek(0)
