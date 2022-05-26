@@ -188,23 +188,23 @@ async def args(ctx, arg1):
         aperank = int(arg1)
 
         for ape in sheet:
-            if ape[27] == str(aperank):
+            if ape[23] == str(aperank):
 
                 ape_image = create_image_by_id(int(ape[0]))
 
                 traits = ape[1], ape[2], ape[3], ape[4], ape[5], ape[6], ape[7], ape[8]
 
-                totalscoref = float(ape[26].replace(',', '.'))
+                totalscoref = float(ape[22].replace(',', '.'))
                 totalscore = float(f'{totalscoref:.2f}')
 
                 if ape[28] == 'Y':
 
                     infomessage = 'The Ape ranked #{} has the ID #{}. Its traits are {}.\n It is ' \
                                   'G̶͕̖͕̙̙̐̍̀l̸͚̩͍͙̖͑́̍̔̊̍̐̄͜i̶͕͓̩̥̦̭͖̟̮̹͒̉͑͛̈́́͠ţ̶͕̬̼̮̥̩̤̗̘̂͊͌͌̅̾͠c' \
-                                  '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n\n'.format(ape[27], ape[0], traits)
+                                  '̸̢̦͎̘̱͐̈̅̓̌ḩ̶̛̦̫̣͚̜̝̮̻̝̑̀̌̉͊̒̅͌e̵̢̳̤͒̂̐͌͑d̶̢̨̘̪͚̼̭̐̓̄̍͌̚͘̚͜!   \n\n'.format(ape[23], ape[0], traits)
 
                 else:
-                    infomessage = 'The Ape ranked #{} has the ID #{}. Its traits are {}.\n\nIts total score is {}/100.\n'.format(ape[27], ape[0],
+                    infomessage = 'The Ape ranked #{} has the ID #{}. Its traits are {}.\n\nIts total score is {}/100.\n'.format(ape[23], ape[0],
                                                                                                   traits, totalscore)
 
                 with BytesIO() as image_binary:
@@ -263,11 +263,11 @@ async def args(ctx, arg1):
                     while sexy_trait in ["None", "Nothing"]:
                         sexy_trait = random.choice(traits)
 
-                    totalscoref = float(ape[26].replace(',', '.'))
+                    totalscoref = float(ape[22].replace(',', '.'))
                     totalscore = float(f'{totalscoref:.2f}')
 
                     # Print rank specific flavor texts
-                    rank = ape[27]
+                    rank = ape[23]
                     rankint = int(rank)
 
                     if rankint == 69:
